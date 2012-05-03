@@ -35,7 +35,7 @@ class MsprojectsController < ApplicationController
     end
     @resources = find_resources(xml)
     params[:file][:msproject].close
-    @members = Member.find(:all, params[:project_id]).collect {|m| User.find_by_id m.user_id }
+    @members = @project.members.collect {|m| User.find_by_id m.user_id }
     @trackers = @project.trackers
     session[:msp_tmp_filename] = params[:file][:msproject].original_filename
   end
@@ -79,6 +79,7 @@ class MsprojectsController < ApplicationController
       unless parent.nil?
         issue.parent_issue_id = parent.id
       end
+      
       if t.create? and issue.save
         @added_tasks << issue 
         @saved_task_table[t.outline_number] = issue
@@ -87,11 +88,11 @@ class MsprojectsController < ApplicationController
         @saved_task_table[t.outline_number] = issue
       end
     end
-      
+    
     flash[:notice] = []
-    flash[:notice] << l(:msp_read_message, @added_tasks.size)
+    flash[:notice] << l(:msp_read_message, :d => @added_tasks.size)
     flash[:notice] << " "
-    flash[:notice] << l(:msp_update_message, @updated_tasks.size)
+    flash[:notice] << l(:msp_update_message, :d => @updated_tasks.size)
   end
 
   private

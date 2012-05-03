@@ -30,8 +30,8 @@
   <tr>
   <td><%= check_box_tag 'checked_items[]', task.task_id, :class => 'task_check_box' %></td>
   <td><span class="msp-level<%= task.outline_level %>"><%= task.name %></span></td>
-  <td><%= select_tag 'trackers[]', options_for_select(@trackers.collect {|t| [t.name, t.id]})%></td>
-  <td><%= select_tag 'assigns[]', "<option value=''></option>" + options_for_select(@members.collect {|m| [m.name, m.id]}) %></td>
+  <td><%= select_tag 'trackers[]', options_for_select(@project.trackers.collect {|t| [t.name, t.id]})%></td>
+  <td><%= select_tag 'assigns[]', "<option value=''></option>" + options_for_select(@project.members.collect {|m| [m.name, m.id]}) %></td>
   <td><%= task.create? ? l(:label_added) : l(:label_modified) %></td>
   <td><%= task.start_date %></td>
   <td><%= task.finish_date %></td>
